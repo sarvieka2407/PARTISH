@@ -1,0 +1,38 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+/* ===== COLOR VARIABLES ===== */
+:root {
+  --plum: #9A0102;
+  --milk: #EFE7DE;
+  --milk-soft: #fff8f1;
+  --border-soft: rgba(56, 25, 50, 0.15);
+  --text-primary: #9A0102;
+  --text-secondary: rgba(56, 25, 50, 0.65);
+}
+
+/* ===== GRID BACKGROUND ===== */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  color: var(--text-primary);
+
+  background-color: var(--milk);
+
+  background-image:
+    linear-gradient(var(--border-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+
+  background-size: 36px 36px;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+}
