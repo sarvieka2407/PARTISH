@@ -25,6 +25,10 @@ export default function Login() {
           Sign In
         </button>
 
+        <button style={button} onClick={handleLogin}>
+          Sign In with Google
+        </button>
+
         {/* SIGNUP LINK */}
         <p style={footer}>
           Don’t have an account?{" "}
