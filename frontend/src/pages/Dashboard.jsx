@@ -1,32 +1,44 @@
+import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import EmailCard from "../EmailCard";
+import API from "../services/api";
 
 export default function Dashboard() {
-  const emails = [
-    {
-      subject: "Laptop crashed before interview",
-      sender: "rahul@gmail.com",
-      status: "critical",
-    },
+  const [emails, setEmails] = useState([]);
+  const [processing, setProcessing] = useState(false);
 
-    {
-      subject: "Quick call this week?",
-      sender: "arjun@elevate.com",
-      status: "review",
-      calendarEvent: {
-        scheduled: true,
-        time: "Wed 3:00 PM IST",
-        duration: "30 mins",
-      },
-    },
+  // 🔥 Fetch emails from backend
+  useEffect(() => {
+    fetchEmails();
+  }, []);
 
-    {
-      subject: "Newsletter subscription",
-      sender: "news@company.com",
-      status: "noise",
-    },
-  ];
+  async function fetchEmails() {
+    try {
+      const res = await API.get("/api/gmail/messages");
+      setEmails(res.data);
+    } catch (err) {
+      console.error("Failed to fetch emails:", err);
+    }
+  }
 
+  // 🤖 Trigger AI inbox processing
+  async function processInbox() {
+    try {
+      setProcessing(true);
+
+      // run AI classification
+      await API.post("/api/gmail/process_inbox");
+
+      // reload updated emails
+      await fetchEmails();
+    } catch (err) {
+      console.error("Processing failed:", err);
+    } finally {
+      setProcessing(false);
+    }
+  }
+
+  // 🔥 Auto-sort emails into columns
   const columns = {
     critical: emails.filter((e) => e.status === "critical"),
     review: emails.filter((e) => e.status === "review"),
@@ -36,6 +48,19 @@ export default function Dashboard() {
   return (
     <>
       <Navbar />
+
+      {/* AI PROCESS BUTTON */}
+      <div style={processWrapper}>
+        <button
+          style={processBtn}
+          onClick={processInbox}
+          disabled={processing}
+        >
+          {processing
+            ? "🤖 AI analyzing inbox..."
+            : "🤖 Analyze Inbox with AI"}
+        </button>
+      </div>
 
       <div style={pageWrapper}>
         <div style={board}>
@@ -68,8 +93,24 @@ function Column({ title, emails }) {
 
 /* ===== STYLES ===== */
 
+const processWrapper = {
+  textAlign: "center",
+  marginTop: "90px",
+};
+
+const processBtn = {
+  padding: "12px 22px",
+  borderRadius: "12px",
+  border: "none",
+  background: "#381932",
+  color: "#FFF3E6",
+  fontWeight: "600",
+  cursor: "pointer",
+  boxShadow: "0 10px 20px rgba(56,25,50,0.2)",
+};
+
 const pageWrapper = {
-  paddingTop: "110px",
+  paddingTop: "40px",
   display: "flex",
   justifyContent: "center",
 };

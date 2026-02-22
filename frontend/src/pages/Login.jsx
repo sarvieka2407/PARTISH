@@ -3,9 +3,15 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
   const navigate = useNavigate();
 
+  // Temporary normal login
   function handleLogin() {
-    // fake login for now
     navigate("/dashboard");
+  }
+
+  // Google OAuth login (REAL BACKEND CALL)
+  function handleGoogleLogin() {
+    window.location.href =
+      "http://localhost:8000/auth/login/google";
   }
 
   return (
@@ -21,21 +27,20 @@ export default function Login() {
         <input style={input} type="email" placeholder="Email address" />
         <input style={input} type="password" placeholder="Password" />
 
+        {/* NORMAL LOGIN (temporary) */}
         <button style={button} onClick={handleLogin}>
           Sign In
         </button>
 
-        <button style={button} onClick={handleLogin}>
+        {/* GOOGLE LOGIN */}
+        <button style={button} onClick={handleGoogleLogin}>
           Sign In with Google
         </button>
 
         {/* SIGNUP LINK */}
         <p style={footer}>
           Don’t have an account?{" "}
-          <span
-            style={link}
-            onClick={() => navigate("/signup")}
-          >
+          <span style={link} onClick={() => navigate("/signup")}>
             Sign up
           </span>
         </p>
